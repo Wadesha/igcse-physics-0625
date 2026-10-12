@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cambridge IGCSE Physics 0625 &middot; Practice</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\(','\)']], displayMath: [['$$','$$'], ['\[','\]']] }
+};
+</script>
+<script src="mathjax/tex-mml-svg.js" async></script>
+
+<link rel="stylesheet" href="_theme.css">
+<link rel="stylesheet" href="_theme_slides.css">
+<style>
+/* Layout unique to the practice page; menu/card grid/progress/nav come from teaching-kit */
+.grid{margin-top:8px}
+.qbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px 28px;min-height:230px}
+.qhead{color:var(--dim);font-size:13px;margin-bottom:8px}
+.qtext{font-size:18px;line-height:1.85}
+.abox{margin-top:18px;border-left:3px solid var(--acc2);padding:12px 16px;display:none}
+.abox.on{display:block}
+.kbd{color:var(--dim);font-size:12.5px;margin-top:10px}
+.kbd b{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+</style></head>
+<body>
+<div class="wrap">
+<div class="side">
+  <h1>Cambridge IGCSE Physics<br>Practice</h1>
+  <div class="sub">6 topics &middot; 60 questions</div>
+  <div class="grp">Controls</div>
+  <a class="item" href="#" onclick="backMenu();return false;">&larr; Back to topic menu</a>
+  <div class="grp" style="margin-top:16px">Other pages</div>
+  <a class="item" href="index.html">&larr; Home</a>
+  <a class="item" href="slides.html">Class slides</a>
+  <a class="item" href="guide.html">Study guide</a>
+  <a class="item" href="formula.html">Formula book</a>
+</div>
+<div class="main">
+
+<div class="menu on" id="menu">
+  <div class="hero">
+  <h1>Practice</h1>
+  <div class="meta">Pick a topic to play its questions one by one. Answers are hidden by default;
+  press <b>Space</b> to show/hide, <b>&larr; &rarr;</b> to flip, <b>Esc</b> back to this menu.</div>
+  </div>
+  <div id="groups"></div>
+</div>
+
+<div class="stage" id="stage">
+  <div class="toolbar">
+    <button class="btn" onclick="backMenu()">&larr; Menu</button>
+    <button class="btn" onclick="toggleAns()">Show/Hide answer</button>
+    <button class="btn" onclick="prev()">Previous</button>
+    <button class="btn" onclick="next_()">Next</button>
+    <span class="btn" id="pos">—</span>
+  </div>
+  <div class="bar"><i id="prog"></i></div>
+  <div class="qbox">
+    <div class="qhead" id="qhead">—</div>
+    <div class="qtext" id="qtext">—</div>
+    <div class="abox" id="abox"><b style="color:var(--acc2)">Answer</b>
+      <div id="atext" style="margin-top:6px"></div></div>
+  </div>
+  <div class="nav">
+    <button class="btn" onclick="prev()">&larr; Previous</button>
+    <button class="btn" onclick="toggleAns()">Space: answer</button>
+    <button class="btn" onclick="next_()">Next &rarr;</button>
+  </div>
+  <div class="kbd">Shortcuts: <b>&larr;</b> previous &middot; <b>&rarr;</b> next &middot; <b>Space</b> answer &middot; <b>Esc</b> back to menu</div>
+</div>
+
+</div></div>
+<script>
+const DATA = {"decks": [{"key": "motion_forces", "title": "Motion, Forces & Energy", "group": "P", "qs": [{"n": 1, "q": "<p>A cyclist travels $450\\ \\mathrm{m}$ in $30\\ \\mathrm{s}$. Calculate the average speed.</p>", "a": "<p>$v=\\dfrac{d}{t}=\\dfrac{450}{30}=15\\ \\mathrm{m/s}$.</p>"}, {"n": 2, "q": "<p>A car increases its velocity from $12\\ \\mathrm{m/s}$ to $30\\ \\mathrm{m/s}$ in $6\\ \\mathrm{s}$. Calculate its acceleration.</p>", "a": "<p>$a=\\dfrac{\\Delta v}{t}=\\dfrac{30-12}{6}=\\dfrac{18}{6}=3\\ \\mathrm{m/s^2}$.</p>"}, {"n": 3, "q": "<p>An object of mass $5.0\\ \\mathrm{kg}$ is taken to the Moon where $g=1.6\\ \\mathrm{N/kg}$. State its mass and calculate its weight there.</p>", "a": "<p>Mass is unchanged: $5.0\\ \\mathrm{kg}$. Weight $=mg=5.0\\times 1.6=8.0\\ \\mathrm{N}$.</p>"}, {"n": 4, "q": "<p>A metal block measures $4.0\\ \\mathrm{cm}\\times 5.0\\ \\mathrm{cm}\\times 2.0\\ \\mathrm{cm}$ and has a mass of $320\\ \\mathrm{g}$. Calculate its density in $\\mathrm{kg/m^3}$.</p>", "a": "<p>Volume $=4.0\\times 5.0\\times 2.0=40\\ \\mathrm{cm^3}$. Density $=\\dfrac{320}{40}=8.0\\ \\mathrm{g/cm^3}=8000\\ \\mathrm{kg/m^3}$.</p>"}, {"n": 5, "q": "<p>A spring of original length $12.0\\ \\mathrm{cm}$ extends to $17.0\\ \\mathrm{cm}$ when a $10\\ \\mathrm{N}$ load is hung from it. Calculate the spring constant.</p>", "a": "<p>Extension $x=17.0-12.0=5.0\\ \\mathrm{cm}=0.050\\ \\mathrm{m}$. $k=\\dfrac{F}{x}=\\dfrac{10}{0.050}=200\\ \\mathrm{N/m}$.</p>"}, {"n": 6, "q": "<p>A resultant force of $24\\ \\mathrm{N}$ acts on a mass of $6.0\\ \\mathrm{kg}$. Calculate the acceleration produced.</p>", "a": "<p>$a=\\dfrac{F}{m}=\\dfrac{24}{6.0}=4.0\\ \\mathrm{m/s^2}$.</p>"}, {"n": 7, "q": "<p>A uniform metre rule is pivoted at its centre (the $50\\ \\mathrm{cm}$ mark). A $4.0\\ \\mathrm{N}$ weight is hung at the $10\\ \\mathrm{cm}$ mark. What weight must be hung at the $80\\ \\mathrm{cm}$ mark to balance the rule?</p>", "a": "<p>Taking moments about the pivot: anticlockwise moment $=4.0\\times (50-10)=4.0\\times 40=160\\ \\mathrm{N\\,cm}$. Clockwise: $W\\times (80-50)=W\\times 30$. For equilibrium $30W=160$, so $W=5.3\\ \\mathrm{N}$.</p>"}, {"n": 8, "q": "<p>A crane lifts a $500\\ \\mathrm{kg}$ load through a height of $12\\ \\mathrm{m}$ in $20\\ \\mathrm{s}$. Calculate the useful power output. Use $g=9.8\\ \\mathrm{N/kg}$.</p>", "a": "<p>Energy transferred $=mg\\Delta h=500\\times 9.8\\times 12=58\\,800\\ \\mathrm{J}$. $P=\\dfrac{E}{t}=\\dfrac{58\\,800}{20}=2940\\ \\mathrm{W}\\approx 2.9\\ \\mathrm{kW}$.</p>"}, {"n": 9, "q": "<p>An electric motor takes in $800\\ \\mathrm{J}$ of electrical energy and delivers $600\\ \\mathrm{J}$ of useful kinetic energy. Calculate its efficiency.</p>", "a": "<p>Efficiency $=\\dfrac{600}{800}=0.75$, i.e. $75\\%$. The remaining $200\\ \\mathrm{J}$ is dissipated as thermal energy.</p>"}, {"n": 10, "q": "<p>A rectangular block of weight $120\\ \\mathrm{N}$ rests on a face of area $0.40\\ \\mathrm{m^2}$. It is then stood on a smaller face of area $0.10\\ \\mathrm{m^2}$. Calculate the pressure in each case.</p>", "a": "<p>$p=\\dfrac{F}{A}$: $\\dfrac{120}{0.40}=300\\ \\mathrm{Pa}$, and $\\dfrac{120}{0.10}=1200\\ \\mathrm{Pa}$. The smaller contact area gives four times the pressure.</p>"}]}, {"key": "thermal", "title": "Thermal Physics", "group": "P", "qs": [{"n": 1, "q": "<p>Calculate the energy needed to raise the temperature of $2.0\\ \\mathrm{kg}$ of water from $15^\\circ\\mathrm{C}$ to $100^\\circ\\mathrm{C}$. Use $c=4200\\ \\mathrm{J/(kg\\,^\\circ C)}$.</p>", "a": "<p>$\\Delta T=85^\\circ\\mathrm{C}$. $E=mc\\Delta T=2.0\\times 4200\\times 85=714\\,000\\ \\mathrm{J}\\approx 7.1\\times 10^5\\ \\mathrm{J}$.</p>"}, {"n": 2, "q": "<p>A $0.50\\ \\mathrm{kg}$ block of aluminium is supplied with $9000\\ \\mathrm{J}$ of energy and its temperature rises by $20^\\circ\\mathrm{C}$. Calculate the specific heat capacity of aluminium.</p>", "a": "<p>$c=\\dfrac{E}{m\\Delta T}=\\dfrac{9000}{0.50\\times 20}=\\dfrac{9000}{10}=900\\ \\mathrm{J/(kg\\,^\\circ C)}$.</p>"}, {"n": 3, "q": "<p>State the difference between boiling and evaporation.</p>", "a": "<p>Boiling occurs throughout the liquid, only at the boiling temperature, and is rapid, with bubbles of vapour forming inside the liquid. Evaporation occurs only at the surface, at any temperature, and is slow, with the most energetic molecules escaping.</p>"}, {"n": 4, "q": "<p>Explain why evaporation of sweat cools the body.</p>", "a": "<p>The molecules with the greatest kinetic energy escape from the surface of the sweat. The molecules left behind therefore have a lower average kinetic energy, so the liquid (and the skin beneath it) is cooler.</p>"}, {"n": 5, "q": "<p>Explain, in terms of density, how a convection current forms in a beaker of water heated at the bottom.</p>", "a": "<p>Water at the bottom is heated, expands, and becomes less dense than the surrounding water. It rises, and cooler, denser water sinks to replace it. The resulting circulation — rising warm water and sinking cool water — is the convection current.</p>"}, {"n": 6, "q": "<p>Why does a metal saucepan usually have a wooden or plastic handle?</p>", "a": "<p>Metal is a good conductor of thermal energy, so the body of the pan heats quickly and transfers energy to the food. Wood and plastic are poor conductors (insulators), so the handle stays cool enough to hold safely.</p>"}, {"n": 7, "q": "<p>A householder wants to reduce heat loss through the roof. Suggest one method and explain which transfer process it reduces.</p>", "a": "<p>Lay loft insulation (such as fibreglass or mineral wool) between the ceiling joists. It traps pockets of still air; air is a very poor conductor, so conduction through the roof space is greatly reduced. The trapped air also cannot circulate, so convection is reduced as well.</p>"}, {"n": 8, "q": "<p>Explain why a black car parked in sunshine becomes hotter than a white car parked beside it.</p>", "a": "<p>A black, dark surface is a good absorber of thermal (infrared) radiation, so it takes in a large fraction of the Sun's radiation. A white, shiny surface reflects most of that radiation and absorbs little. Since the black car absorbs energy at a higher rate, its temperature rises higher before the rate of energy loss balances the rate of gain.</p>"}, {"n": 9, "q": "<p>A sealed syringe contains air at room temperature. The plunger is pushed in slowly, halving the volume, while the temperature is kept constant. Explain, in terms of particles, what happens to the pressure.</p>", "a": "<p>The same number of molecules now occupy half the volume, so they are closer together and collide with the walls twice as often per second. More frequent collisions produce a larger force per unit area, so the pressure doubles.</p>"}]}, {"key": "waves", "title": "Waves", "group": "P", "qs": [{"n": 1, "q": "<p>A sound wave has a frequency of $500\\ \\mathrm{Hz}$ and travels at $340\\ \\mathrm{m/s}$. Calculate its wavelength.</p>", "a": "<p>$\\lambda=\\dfrac{v}{f}=\\dfrac{340}{500}=0.68\\ \\mathrm{m}$.</p>"}, {"n": 2, "q": "<p>A water wave has a wavelength of $0.40\\ \\mathrm{m}$ and a speed of $2.0\\ \\mathrm{m/s}$. Calculate its frequency and its period.</p>", "a": "<p>$f=\\dfrac{v}{\\lambda}=\\dfrac{2.0}{0.40}=5.0\\ \\mathrm{Hz}$. $T=\\dfrac{1}{f}=\\dfrac{1}{5.0}=0.20\\ \\mathrm{s}$.</p>"}, {"n": 3, "q": "<p>State the difference between a transverse and a longitudinal wave, and give one example of each.</p>", "a": "<p>In a transverse wave the oscillation is perpendicular to the direction of energy transfer (for example light, or a water wave). In a longitudinal wave the oscillation is parallel to the direction of energy transfer (for example sound in air).</p>"}, {"n": 4, "q": "<p>Light strikes a plane mirror at an angle of incidence of $35^\\circ$. State the angle of reflection and describe the image formed.</p>", "a": "<p>The angle of reflection is $35^\\circ$ (measured from the normal). The image is virtual, upright, the same size as the object, and laterally inverted.</p>"}, {"n": 5, "q": "<p>Explain why total internal reflection cannot occur when light travels from air into glass.</p>", "a": "<p>TIR requires light to be travelling from a denser medium into a less dense one so that it bends away from the normal and can reach a critical angle. Travelling from air into glass, the light bends towards the normal, so the angle of refraction is always smaller than the angle of incidence and a critical angle is never reached.</p>"}, {"n": 6, "q": "<p>An object is placed closer to a converging lens than its focal length. Describe the image formed and state one use of this arrangement.</p>", "a": "<p>The image is virtual, upright and magnified. The rays diverge after the lens, so they never meet and the image cannot be caught on a screen. This is the arrangement used in a magnifying glass.</p>"}, {"n": 7, "q": "<p>Explain why diffraction is more noticeable for sound waves than for light waves in everyday situations.</p>", "a": "<p>Diffraction is strongest when the wavelength is comparable to the size of the gap or obstacle. Sound wavelengths in air are of the order of a metre, similar to doorways and corners, so sound spreads around them easily. Light has a wavelength of less than a millionth of a metre, so it diffracts only appreciably through extremely small apertures.</p>"}, {"n": 8, "q": "<p>A ray of light enters a glass block at an angle of incidence of $50^\\circ$. The refractive index of the glass is $1.50$. Calculate the angle of refraction.</p>", "a": "<p>$\\sin r=\\dfrac{\\sin i}{n}=\\dfrac{\\sin 50^\\circ}{1.50}=\\dfrac{0.766}{1.50}=0.511$, so $r=\\sin^{-1}(0.511)\\approx 31^\\circ$.</p>"}, {"n": 9, "q": "<p>Give two reasons why digital signals are preferred to analogue signals for long-distance communication.</p>", "a": "<p>Digital signals are far less affected by noise, because a receiver only has to distinguish between two levels rather than reproduce an exact waveform; and they can be regenerated (amplified and reshaped) exactly at each repeater, so the signal does not degrade with distance.</p>"}, {"n": 10, "q": "<p>Explain why an astronaut on the Moon cannot hear a colleague hammering, even though they can see it.</p>", "a": "<p>Sound needs a medium to travel through, and the Moon's surface has no atmosphere, so the vibrations cannot reach the astronaut's ear. Light is an electromagnetic wave and needs no medium, so it travels through the vacuum and the hammering can be seen.</p>"}]}, {"key": "electricity", "title": "Electricity & Magnetism", "group": "P", "qs": [{"n": 1, "q": "<p>A charge of $90\\ \\mathrm{C}$ passes a point in a circuit in $30\\ \\mathrm{s}$. Calculate the current.</p>", "a": "<p>$I=\\dfrac{Q}{t}=\\dfrac{90}{30}=3.0\\ \\mathrm{A}$.</p>"}, {"n": 2, "q": "<p>A resistor has a p.d. of $9.0\\ \\mathrm{V}$ across it when the current through it is $0.30\\ \\mathrm{A}$. Calculate its resistance.</p>", "a": "<p>$R=\\dfrac{V}{I}=\\dfrac{9.0}{0.30}=30\\ \\Omega$.</p>"}, {"n": 3, "q": "<p>Calculate the power of a heater that operates from a $230\\ \\mathrm{V}$ supply with a current of $4.0\\ \\mathrm{A}$.</p>", "a": "<p>$P=VI=230\\times 4.0=920\\ \\mathrm{W}$.</p>"}, {"n": 4, "q": "<p>A $2.0\\ \\mathrm{kW}$ heater runs for $3.0$ hours. Calculate the energy used in kW h and the cost at $0.15$ currency units per kW h.</p>", "a": "<p>Energy $=2.0\\times 3.0=6.0\\ \\mathrm{kW\\,h}$. Cost $=6.0\\times 0.15=0.90$ currency units.</p>"}, {"n": 5, "q": "<p>Three resistors of $2.0\\ \\Omega$, $3.0\\ \\Omega$ and $5.0\\ \\Omega$ are connected in series. Calculate the total resistance.</p>", "a": "<p>$R=2.0+3.0+5.0=10.0\\ \\Omega$.</p>"}, {"n": 6, "q": "<p>A $6.0\\ \\Omega$ resistor and a $3.0\\ \\Omega$ resistor are connected in parallel. Calculate the combined resistance.</p>", "a": "<p>$\\dfrac{1}{R}=\\dfrac{1}{6.0}+\\dfrac{1}{3.0}=0.167+0.333=0.500$, so $R=\\dfrac{1}{0.500}=2.0\\ \\Omega$.</p>"}, {"n": 7, "q": "<p>Two resistors, $100\\ \\Omega$ and $300\\ \\Omega$, are connected in series across a $12\\ \\mathrm{V}$ supply. Calculate the p.d. across each resistor.</p>", "a": "<p>Total resistance $=400\\ \\Omega$; current $=\\dfrac{12}{400}=0.030\\ \\mathrm{A}$. Across the $100\\ \\Omega$ resistor: $V=IR=0.030\\times 100=3.0\\ \\mathrm{V}$. Across the $300\\ \\Omega$ resistor: $V=0.030\\times 300=9.0\\ \\mathrm{V}$. (Check: $3.0+9.0=12\\ \\mathrm{V}$, and the p.d.s are in the ratio of the resistances, $1:3$.)</p>"}, {"n": 8, "q": "<p>Explain why a fuse must be connected in the live wire rather than the neutral wire.</p>", "a": "<p>The fuse must break the connection to the high-voltage live wire. If it were in the neutral wire it would still stop the current, but the appliance's internal wiring would remain connected to the live wire at mains voltage, so the appliance would still be dangerous to touch even though it had stopped working.</p>"}, {"n": 9, "q": "<p>State two reasons why electricity is transmitted at very high voltage.</p>", "a": "<p>For a given power, a higher voltage means a smaller current ($P=VI$). The power lost as heat in the cables is $I^2R$, so reducing the current greatly reduces the energy lost; it also allows thinner, cheaper cables to be used.</p>"}, {"n": 10, "q": "<p>A transformer has $500$ turns on the primary and $2000$ turns on the secondary, connected to a $50\\ \\mathrm{V}$ a.c. supply. State whether it is step-up or step-down and calculate the output voltage.</p>", "a": "<p>There are more turns on the secondary, so it is a <strong>step-up</strong> transformer. $V_s=50\\times\\dfrac{2000}{500}=200\\ \\mathrm{V}$.</p>"}, {"n": 11, "q": "<p>A wire is moved downwards through a horizontal magnetic field directed from left to right. State two changes that would increase the induced e.m.f.</p>", "a": "<p>Move the wire faster, and use a stronger magnetic field. (Using a longer wire, or a coil with more turns, in the field would also increase it.)</p>"}]}, {"key": "nuclear", "title": "Nuclear Physics", "group": "P", "qs": [{"n": 1, "q": "<p>State the number of protons and neutrons in the nuclide ${}^{60}_{\\ 27}\\mathrm{Co}$.</p>", "a": "<p>Protons $=Z=27$. Neutrons $=A-Z=60-27=33$.</p>"}, {"n": 2, "q": "<p>Explain what is meant by an isotope, and state why isotopes of an element have the same chemical properties.</p>", "a": "<p>Isotopes are atoms of the same element (the same number of protons) with different numbers of neutrons, hence different nucleon numbers. Chemical properties depend on the number and arrangement of the electrons, which is the same for all isotopes of an element, so their chemistry is identical.</p>"}, {"n": 3, "q": "<p>A radioactive isotope has a half-life of $6.0$ hours and an initial corrected count rate of $640$ counts/minute. What is the corrected count rate after $18$ hours?</p>", "a": "<p>$18$ hours is $\\dfrac{18}{6.0}=3$ half-lives, so the count rate is $640\\times\\left(\\dfrac{1}{2}\\right)^3=640\\times\\dfrac{1}{8}=80$ counts/minute.</p>"}, {"n": 4, "q": "<p>Complete the decay equation: ${}^{214}_{\\ 82}\\mathrm{Pb}\\rightarrow{}^{214}_{\\ 83}\\mathrm{Bi}+\\ ?$</p>", "a": "<p>The nucleon number is unchanged and the proton number increases by 1, so this is beta decay and the missing particle is ${}^{\\ 0}_{-1}\\mathrm{e}$, a beta particle (electron).</p>"}, {"n": 5, "q": "<p>Explain why the count rate from a radioactive source should be measured over a long time and corrected for background radiation.</p>", "a": "<p>Radioactive decay is random, so the count rate fluctuates from moment to moment; averaging over a long time gives a reliable value. Background radiation is always present and is counted by the detector as well, so it must be measured separately and subtracted to give the count rate due to the source alone.</p>"}, {"n": 6, "q": "<p>Explain why alpha radiation is the most strongly ionising but the least penetrating of the three types.</p>", "a": "<p>An alpha particle is relatively large and carries a charge of $+2$, so it interacts strongly with the atoms it passes and readily removes electrons from them — hence strong ionisation. Because it loses energy rapidly in these interactions, it travels only a few centimetres in air and is stopped by a sheet of paper.</p>"}, {"n": 7, "q": "<p>A source emits gamma radiation and has a half-life of $6$ hours. Explain why it is suitable for use as a medical tracer, and state one safety precaution.</p>", "a": "<p>Gamma is weakly ionising but highly penetrating, so it can escape the body and be detected by a camera outside, giving an image without surgery. A half-life of a few hours is long enough to carry out the scan but short enough that the activity in the patient falls to a low level quickly. A precaution: the source should be handled with tongs, kept behind lead shielding, and the exposure time kept as short as possible.</p>"}, {"n": 8, "q": "<p>Compare nuclear fission and nuclear fusion, stating one similarity and one difference.</p>", "a": "<p>Similarity: both release energy because the products have a slightly smaller total mass than the reactants. Difference: fission splits a large, unstable nucleus into smaller nuclei, whereas fusion joins two small nuclei to make a larger one; fission is used in nuclear power stations, while fusion powers the stars.</p>"}, {"n": 9, "q": "<p>An isotope has a half-life of $8.0$ days. A sample initially contains $4.8\\times 10^{20}$ undecayed nuclei. How many remain after $24$ days?</p>", "a": "<p>$24$ days is $3$ half-lives, so the number remaining is $4.8\\times 10^{20}\\times\\left(\\dfrac{1}{2}\\right)^3=4.8\\times 10^{20}\\times\\dfrac{1}{8}=6.0\\times 10^{19}$ nuclei.</p>"}, {"n": 10, "q": "<p>In an electric field, alpha particles are deflected slightly towards the negative plate and beta particles strongly towards the positive plate. Explain both observations.</p>", "a": "<p>Alpha particles are positively charged, so they are attracted to the negative plate; but they are about 7000 times more massive than an electron, so they are deflected only slightly. Beta particles are electrons, negatively charged, so they are attracted to the positive plate; their very small mass means the same force produces a much larger acceleration, so they are deflected strongly.</p>"}]}, {"key": "space", "title": "Space Physics", "group": "P", "qs": [{"n": 1, "q": "<p>State the order of the eight planets, starting with the one closest to the Sun.</p>", "a": "<p>Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.</p>"}, {"n": 2, "q": "<p>Explain the difference between the Earth rotating on its axis and the Earth orbiting the Sun, and state what each causes.</p>", "a": "<p>Rotation is the Earth spinning on its own axis, once about every 24 hours, and it causes day and night. Orbiting (revolution) is the Earth's motion around the Sun, once about every year; combined with the tilt of the Earth's axis it causes the seasons.</p>"}, {"n": 3, "q": "<p>The Moon orbits the Earth with a period of about $27.3$ days at an orbital radius of $3.8\\times 10^8\\ \\mathrm{m}$. Calculate its average orbital speed.</p>", "a": "<p>$T=27.3\\times 24\\times 3600=2.36\\times 10^6\\ \\mathrm{s}$. $v=\\dfrac{2\\pi r}{T}=\\dfrac{2\\pi\\times 3.8\\times 10^8}{2.36\\times 10^6}=\\dfrac{2.39\\times 10^9}{2.36\\times 10^6}\\approx 1.0\\times 10^3\\ \\mathrm{m/s}$ (about $1.0\\ \\mathrm{km/s}$).</p>"}, {"n": 4, "q": "<p>Explain why a comet travels fastest when it is closest to the Sun.</p>", "a": "<p>The Sun's gravitational pull on the comet is strongest when the comet is closest to it. This larger force produces a larger acceleration, and over the part of the orbit near the Sun the force partly acts along the direction of motion, increasing the comet's speed. Energy is conserved: as the comet falls closer to the Sun it loses gravitational potential energy and gains kinetic energy.</p>"}, {"n": 5, "q": "<p>Calculate the distance, in metres, corresponding to $4.2$ light-years.</p>", "a": "<p>$4.2\\times 9.5\\times 10^{15}=4.0\\times 10^{16}\\ \\mathrm{m}$.</p>"}, {"n": 6, "q": "<p>State what is meant by the main sequence stage of a star's life, and explain why the star is stable during this stage.</p>", "a": "<p>The main sequence is the long stage during which a star is fusing hydrogen into helium in its core. The star is stable because the inward force of gravity pulling its material together is balanced by the outward pressure produced by the energy released in fusion, so its size and temperature stay roughly constant for billions of years.</p>"}, {"n": 7, "q": "<p>Describe how a star much more massive than the Sun ends its life, naming the stages.</p>", "a": "<p>It expands into a red supergiant, then explodes as a supernova. The remnant left behind is a neutron star, or, if enough mass remains, a black hole from which light cannot escape.</p>"}, {"n": 8, "q": "<p>Explain what redshift is and how it provides evidence that the Universe is expanding.</p>", "a": "<p>Redshift is an increase in the observed wavelength of light from a source that is moving away from the observer, shifting its spectrum towards the red end. Light from distant galaxies is redshifted, and the more distant the galaxy the greater the redshift, which means more distant galaxies are receding faster. Since essentially all distant galaxies are receding from us, the Universe as a whole is expanding.</p>"}, {"n": 9, "q": "<p>A galaxy is $3.0\\times 10^{24}\\ \\mathrm{m}$ away. Using $H_0=2.2\\times 10^{-18}\\ \\mathrm{s^{-1}}$, calculate the speed at which it is receding.</p>", "a": "<p>$v=H_0 d=2.2\\times 10^{-18}\\times 3.0\\times 10^{24}=6.6\\times 10^6\\ \\mathrm{m/s}$ (about $6600\\ \\mathrm{km/s}$).</p>"}, {"n": 10, "q": "<p>State what the cosmic microwave background radiation is and why it supports the Big Bang model.</p>", "a": "<p>The CMBR is low-intensity microwave radiation detected almost uniformly from every direction in the sky. It is interpreted as radiation produced when the Universe was extremely hot and dense, shortly after the Big Bang, which has been stretched to microwave wavelengths by the subsequent expansion of space. Its existence — and its near-perfect uniformity — is a direct prediction of the Big Bang model and is difficult to explain in any model without a hot, dense early stage.</p>"}]}], "gmeta": {"P": {"title": "Cambridge IGCSE Physics 0625 (6 topics)", "label": "Physics · Space Physics"}}, "grank": ["P"]};
+let cur = null, idx = 0, showAns = false;
+
+/* MathJax loads asynchronously: after dynamically inserting content we must
+   re-typeset. A single Promise chain serialises all typeset calls so fast
+   question changes don't trigger MathJax "Typeset already in progress"; retry
+   by polling until MathJax has finished loading. */
+let _tp = Promise.resolve();
+function typeset(id){
+  const run = function() {
+    const el = id ? [document.getElementById(id)] : undefined;
+    return window.MathJax.typesetPromise(el);
+  };
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    _tp = _tp.then(run).catch(function(e){ /* ignore a local typeset error */ });
+  } else {
+    setTimeout(function(){ typeset(id); }, 120);
+  }
+}
+
+function renderMenu(){
+  const box = document.getElementById('groups');
+  let h = '';
+  DATA.grank.forEach(function(g){
+    h += '<h3>' + DATA.gmeta[g].title + '</h3><div class="grid">';
+    DATA.decks.filter(function(d){return d.group===g;}).forEach(function(d){
+      h += '<div class="card" onclick="openDeck(\'' + d.key + '\')"><div class="t">' +
+           d.title + '</div><div class="c">' + d.qs.length + ' questions</div></div>';
+    });
+    h += '</div>';
+  });
+  box.innerHTML = h;
+  typeset('groups');
+}
+
+function openDeck(key){
+  cur = DATA.decks.find(function(d){return d.key===key;});
+  idx = 0; showAns = false;
+  document.getElementById('menu').classList.remove('on');
+  document.getElementById('stage').classList.add('on');
+  render();
+}
+function backMenu(){
+  document.getElementById('stage').classList.remove('on');
+  document.getElementById('menu').classList.add('on');
+}
+function render(){
+  const q = cur.qs[idx];
+  document.getElementById('qhead').textContent = cur.title + '  ·  Question ' + q.n + ' / ' + cur.qs.length;
+  document.getElementById('qtext').innerHTML = q.q;
+  document.getElementById('atext').innerHTML = q.a;
+  document.getElementById('abox').classList.toggle('on', showAns);
+  document.getElementById('pos').textContent = (idx+1) + ' / ' + cur.qs.length;
+  document.getElementById('prog').style.width = ((idx+1)/cur.qs.length*100) + '%';
+  typeset('qbox');
+}
+function toggleAns(){ showAns = !showAns; document.getElementById('abox').classList.toggle('on', showAns);
+  if (showAns) typeset('atext'); }
+function prev(){ if(!cur) return; idx = (idx - 1 + cur.qs.length) % cur.qs.length; showAns=false; render(); }
+function next_(){ if(!cur) return; idx = (idx + 1) % cur.qs.length; showAns=false; render(); }
+document.addEventListener('keydown', function(e){
+  if(!cur) return;
+  if(e.key === 'ArrowRight'){ next_(); }
+  else if(e.key === 'ArrowLeft'){ prev(); }
+  else if(e.key === ' '){ e.preventDefault(); toggleAns(); }
+  else if(e.key === 'Escape'){ backMenu(); }
+});
+renderMenu();
+</script>
+</body></html>
